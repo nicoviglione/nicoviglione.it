@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root { --bg:#050505; --text:#f2f2f2; }
+* { box-sizing:border-box; }
+html, body { margin:0; width:100%; min-height:100%; background:var(--bg); color:var(--text); }
+body { min-height:100vh; overflow:hidden; font-family:"Space Grotesk",Arial,sans-serif; }
+
+.construction {
+    position:relative; min-height:100vh; padding:34px 42px;
+    display:flex; flex-direction:column; justify-content:space-between; overflow:hidden;
+}
+
+.noise {
+    position:fixed; inset:-50%; z-index:20; pointer-events:none; opacity:.075;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    animation:noiseMove .18s steps(2) infinite;
+}
+.scanlines {
+    position:fixed; inset:0; z-index:19; pointer-events:none;
+    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0,rgba(255,255,255,.035) 1px,transparent 1px,transparent 4px);
+    opacity:.35;
+}
+@keyframes noiseMove {
+    0%{transform:translate(0,0)}25%{transform:translate(3%,-2%)}50%{transform:translate(-2%,3%)}75%{transform:translate(2%,1%)}100%{transform:translate(-3%,-2%)}
+}
+
+.channel {
+    position:relative; z-index:2; align-self:flex-start;
+    font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.16em; color:#8a8a8a;
+    animation:channelFlicker 4s infinite;
+}
+@keyframes channelFlicker {
+    0%,92%,100%{opacity:.7}93%{opacity:.2}94%{opacity:.9}95%{opacity:.35}
+}
+
+.signal { position:relative; z-index:2; width:min(900px,100%); margin:auto; text-align:center; }
+.eyebrow { margin:0 0 22px; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.35em; color:#777; }
+h1 { margin:0; font-size:clamp(42px,8vw,100px); line-height:.95; letter-spacing:-.055em; font-weight:700; }
+
+.glitch { position:relative; display:inline-block; animation:signalShift 5s infinite; }
+.glitch::before,.glitch::after { content:attr(data-text); position:absolute; inset:0; pointer-events:none; opacity:0; }
+.glitch::before { color:#ff4040; transform:translateX(-1px); clip-path:inset(10% 0 65% 0); animation:glitchRed 5s infinite; }
+.glitch::after { color:#40a9ff; transform:translateX(1px); clip-path:inset(60% 0 15% 0); animation:glitchBlue 5s infinite; }
+
+@keyframes signalShift {
+    0%,88%,100%{transform:translate(0);filter:none}
+    89%{transform:translate(-2px,1px);filter:blur(.3px)}
+    89.5%{transform:translate(2px,-1px)}
+    90%{transform:translate(0)}
+    96%{filter:blur(.6px)}97%{filter:none}
+}
+@keyframes glitchRed {
+    0%,88%,100%{opacity:0}89%,89.4%{opacity:.55}90%{opacity:0}
+}
+@keyframes glitchBlue {
+    0%,89%,100%{opacity:0}89.5%,90%{opacity:.45}90.5%{opacity:0}
+}
+
+.role { margin:18px 0 0; font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:.32em; color:#aaa; }
+.divider { width:72px; height:1px; margin:32px auto; background:#777; animation:dividerPulse 4s infinite; }
+@keyframes dividerPulse {
+    0%,94%,100%{opacity:.6;transform:scaleX(1)}95%{opacity:.2;transform:scaleX(.6)}96%{opacity:.9;transform:scaleX(1.15)}
+}
+
+.status { display:inline-flex; align-items:center; gap:9px; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em; color:#777; }
+.status-dot { width:6px; height:6px; border-radius:50%; background:#999; animation:statusBlink 1.4s infinite; }
+@keyframes statusBlink { 0%,100%{opacity:.25}50%{opacity:1} }
+.message { margin:22px 0 0; font-size:15px; line-height:1.7; color:#aaa; }
+
+.socials { position:relative; z-index:2; display:flex; justify-content:center; gap:28px; }
+.socials a { color:#8d8d8d; text-decoration:none; font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.18em; transition:color .2s,text-shadow .2s; }
+.socials a:hover { color:#fff; text-shadow:0 0 8px rgba(255,255,255,.4); }
+
+.copyright { position:relative; z-index:2; align-self:flex-end; font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.12em; color:#555; }
+
+@media (max-width:600px) {
+    .construction{padding:24px 22px}
+    h1{font-size:clamp(38px,12vw,64px)}
+    .role{font-size:11px;letter-spacing:.24em}
+    .message{font-size:14px}
+    .socials{gap:18px;flex-wrap:wrap}
+    .copyright{align-self:center;margin-top:20px}
+}
+@media (prefers-reduced-motion:reduce) {
+    .noise,.channel,.glitch,.glitch::before,.glitch::after,.divider,.status-dot{animation:none}
+}
